@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Networking;
+using GameAnalyticsSDK; //added my stuff into here because it seemed easier than setting it up in its own script
 
 public class ImageDownloader : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class ImageDownloader : MonoBehaviour
     void Start()
     {
         StartCoroutine(DownloadAllImages());
+        
     }
 
     private IEnumerator DownloadAllImages()

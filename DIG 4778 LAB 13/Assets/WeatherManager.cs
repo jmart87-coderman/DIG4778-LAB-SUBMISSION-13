@@ -1,10 +1,12 @@
+using GameAnalyticsSDK;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Xml;
 using UnityEngine;
 using UnityEngine.Networking;
-using System.Xml;
-using System.Globalization;
 
 public class WeatherManager : MonoBehaviour { // needs monoBehaviour for the coroutine
     public string APIKey;
@@ -29,6 +31,9 @@ public class WeatherManager : MonoBehaviour { // needs monoBehaviour for the cor
     {
         currentCity = City; //make the starting city = the city you input before loading the scene
         StartCoroutine(GetWeatherXML(OnXMLDataLoaded));
+        GameAnalytics.Initialize();
+        string safeCity = Regex.Replace(City ?? "", @"[^A-Za-z0-9\-_. ()!?]+", "_").Trim('_');
+        GameAnalytics.NewDesignEvent("Weather:CityRefreshed:" + safeCity);
     }
     private void Update()
     {
@@ -168,6 +173,7 @@ public class WeatherManager : MonoBehaviour { // needs monoBehaviour for the cor
     private void RefreshCity()
     {
         StartCoroutine(GetWeatherXML(OnXMLDataLoaded));
+        GameAnalytics.NewDesignEvent("Weather:CityRefreshed:" + currentCity);
     }
     
     
